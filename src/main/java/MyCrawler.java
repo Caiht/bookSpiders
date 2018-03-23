@@ -41,22 +41,20 @@ public class MyCrawler extends WebCrawler {
 
         if (page.getParseData() instanceof HtmlParseData) {
             HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
-            String text = htmlParseData.getText();
             String html = htmlParseData.getHtml();
             Document doc = Jsoup.parse(html);
-            String title =doc.select("body > div:nth-child(12) > div:nth-child(3) > div > div.bookDetaiWrap > div.bookInfo > div.padLeft10 > h1").text();
+            String title =doc.select("div.content > div:nth-child(3) > div > div.bookDetaiWrap > div.bookInfo > div.padLeft10 > h1").text();
             System.out.println("title: " + title);
-
-            String author =doc.select("body > div:nth-child(12) > div:nth-child(3) > div > div.bookDetaiWrap > div.bookInfo > div.padLeft10 > div.author > a").text();
+            String author =doc.select("div.content > div:nth-child(3) > div > div.bookDetaiWrap > div.bookInfo > div.padLeft10 > div.author > a").text();
             System.out.println("author: " + author);
 
-            String price =doc.select("body > div:nth-child(12) > div:nth-child(3) > div > div.bookDetaiWrap > div.bookInfo > div.priceWrap > span.sellPrice").text();
+            String price =doc.select(" div.content > div:nth-child(3) > div > div.bookDetaiWrap > div.bookInfo > div.priceWrap > span.sellPrice").text();
             System.out.println("price: " + price);
 
-            String time =doc.select("body > div:nth-child(12) > div:nth-child(3) > div > div.bookDetaiWrap > div.bookInfo > div.padLeft10 > div.publisher > i").text();
+            String time =doc.select("div.content > div:nth-child(3) > div > div.bookDetaiWrap > div.bookInfo > div.padLeft10 > div.publisher > i").text();
             System.out.println("time: " + time);
 
-            String publisher =doc.select("body > div:nth-child(12) > div:nth-child(3) > div > div.bookDetaiWrap > div.bookInfo > div.padLeft10 > div.publisher > span:nth-child(1)").text();
+            String publisher =doc.select("div.content > div:nth-child(3) > div > div.bookDetaiWrap > div.bookInfo > div.padLeft10 > div.publisher > span:nth-child(1)").text();
             System.out.println("publisher: " + publisher);
 
             String tag =doc.select("#copyrightInfor > ul > li.kind > div:nth-child(2) > a").text();
