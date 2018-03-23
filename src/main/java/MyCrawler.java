@@ -9,6 +9,8 @@ import java.util.regex.Pattern;
 
 public class MyCrawler extends WebCrawler {
 
+
+
     private final static Pattern FILTERS = Pattern.compile("^\\d{7}.*$");
 
     /**
