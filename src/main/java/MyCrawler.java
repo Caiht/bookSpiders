@@ -11,7 +11,7 @@ public class MyCrawler extends WebCrawler {
 
 
 
-    private final static Pattern FILTERS = Pattern.compile("^\\d+?.*$");
+    private final static Pattern FILTERS = Pattern.compile("(http://product.china-pub.com/)(\\d+)");
 
     /**
      * This method receives two parameters. The first parameter is the page
@@ -27,7 +27,7 @@ public class MyCrawler extends WebCrawler {
     public boolean shouldVisit(Page referringPage, WebURL url) {
         String href = url.getURL().toLowerCase();
 
-        return href.startsWith("http://product.china-pub.com/")&&href.replace("http://product.china-pub.com/","").startsWith("[0-9]");
+        return FILTERS.matcher(href).matches();
     }
 
     /**
