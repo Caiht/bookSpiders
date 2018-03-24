@@ -10,6 +10,8 @@ public class Controller {
         int numberOfCrawlers = 7;
 
         CrawlConfig config = new CrawlConfig();
+
+        config.setMaxDepthOfCrawling(4);
         config.setCrawlStorageFolder(crawlStorageFolder);
 
         /*
@@ -27,12 +29,12 @@ public class Controller {
          */
 //        controller.addSeed("http://www.ics.uci.edu/~lopes/");
 //        controller.addSeed("https://book.douban.com/tag/web");
-        controller.addSeed("http://www.bookschina.com");
+        controller.addSeed("http://www.china-pub.com/browse/");
 
         /*
          * Start the crawl. This is a blocking operation, meaning that your code
          * will reach the line after this only when crawling is finished.
          */
-        controller.start(MyCrawler.class, 1);
+        controller.start(MyCrawler.class, numberOfCrawlers);
     }
 }

@@ -11,7 +11,7 @@ public class MyCrawler extends WebCrawler {
 
 
 
-    private final static Pattern FILTERS = Pattern.compile("^\\d{7}.*$");
+    private final static Pattern FILTERS = Pattern.compile("^\\d+?.*$");
 
     /**
      * This method receives two parameters. The first parameter is the page
@@ -27,7 +27,7 @@ public class MyCrawler extends WebCrawler {
     public boolean shouldVisit(Page referringPage, WebURL url) {
         String href = url.getURL().toLowerCase();
 
-        return href.startsWith("http://www.bookschina.com/")&&FILTERS.matcher(href.replace("http://www.bookschina.com/","")).matches();
+        return href.startsWith("http://product.china-pub.com/")&&href.replace("http://product.china-pub.com/","").startsWith("[0-9]");
     }
 
     /**
@@ -43,27 +43,27 @@ public class MyCrawler extends WebCrawler {
             HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
             String html = htmlParseData.getHtml();
             Document doc = Jsoup.parse(html);
-            String title =doc.select("div.content > div:nth-child(3) > div > div.bookDetaiWrap > div.bookInfo > div.padLeft10 > h1").text();
+            String title =doc.select("#right > div.pro_book > div.pro_book > h1").text();
             System.out.println("title: " + title);
-            String author =doc.select("div.content > div:nth-child(3) > div > div.bookDetaiWrap > div.bookInfo > div.padLeft10 > div.author > a").text();
+            String author =doc.select("#con_a_1 > div:nth-child(1) > ul > li:nth-child(1) > a > strong").text();
             System.out.println("author: " + author);
 
-            String price =doc.select(" div.content > div:nth-child(3) > div > div.bookDetaiWrap > div.bookInfo > div.priceWrap > span.sellPrice").text();
+            String price =doc.select("#right > div.pro_book > div.pro_buy_intr > ul > li:nth-child(1) > span").text();
             System.out.println("price: " + price);
 
-            String time =doc.select("div.content > div:nth-child(3) > div > div.bookDetaiWrap > div.bookInfo > div.padLeft10 > div.publisher > i").text();
+            String time =doc.select("#con_a_1 > div:nth-child(1) > ul > li:nth-child(4)").text();
             System.out.println("time: " + time);
 
-            String publisher =doc.select("div.content > div:nth-child(3) > div > div.bookDetaiWrap > div.bookInfo > div.padLeft10 > div.publisher > span:nth-child(1)").text();
+            String publisher =doc.select("#con_a_1 > div:nth-child(1) > ul > li:nth-child(2) > a").text();
             System.out.println("publisher: " + publisher);
 
-            String tag =doc.select("#copyrightInfor > ul > li.kind > div:nth-child(2) > a").text();
+            String tag =doc.select("#con_a_1 > div:nth-child(1) > ul > li:nth-child(10) > span > a:nth-child(2)").text();
             System.out.println("tag: " + tag);
 
-            String introduction =doc.select("#brief > p").text();
+            String introduction =doc.select("#con_a_1 > div:nth-child(2) > div").text();
             System.out.println("introduction: " + introduction);
 
-            String isbn =doc.select("#copyrightInfor > ul > li:nth-child(1)").text();
+            String isbn =doc.select("#con_a_1 > div:nth-child(1) > ul > li:nth-child(4) > strong").text();
             System.out.println("isbn: " + isbn);
         }
     }
