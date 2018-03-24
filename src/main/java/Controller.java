@@ -4,6 +4,8 @@ import edu.uci.ics.crawler4j.fetcher.PageFetcher;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
 
+import java.util.Random;
+
 public class Controller {
     public static void main(String[] args) throws Exception {
         String crawlStorageFolder = "/data/crawl/root";
@@ -13,7 +15,9 @@ public class Controller {
 
         config.setMaxDepthOfCrawling(4);
         config.setCrawlStorageFolder(crawlStorageFolder);
-
+        Random random = new Random();
+        config.setPolitenessDelay(random.nextInt(2000%1001)+1000);
+        config.setResumableCrawling(false);
         /*
          * Instantiate the controller for this crawl.
          */
