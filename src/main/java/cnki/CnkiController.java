@@ -1,3 +1,5 @@
+package cnki;
+
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
@@ -6,14 +8,18 @@ import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
 
 import java.util.Random;
 
-public class Controller {
+public class CnkiController {
+
     public static void main(String[] args) throws Exception {
-        String crawlStorageFolder = "/data/crawl/root";
-        int numberOfCrawlers = 7;
+        String crawlStorageFolder = "/data/crawl/root1";// 定义爬虫数据存储位置
+        int numberOfCrawlers = 7; // 定义7个爬虫，也就是7个线程
 
-        CrawlConfig config = new CrawlConfig();
+        CrawlConfig config = new CrawlConfig();// 定义爬虫配置
+        config.setMaxDepthOfCrawling(4);//抓取深度
 
-//        config.setMaxDepthOfCrawling(4);
+        //页面抓取最大数量
+        //crawlConfig.setMaxPagesToFetch(maxPagesToFetch);
+
         config.setCrawlStorageFolder(crawlStorageFolder);
         Random random = new Random();
         //设置请求的频率
@@ -36,7 +42,7 @@ public class Controller {
          * 是否爬取二进制文件，比如图片，PDF文档，视频之类的东西 这里设置false 不爬取
          * 默认值true，爬取
          */
-        config.setIncludeBinaryContentInCrawling(false);
+//        config.setIncludeBinaryContentInCrawling(false);
         /*
          * 实例化爬虫控制器
          */
@@ -49,12 +55,13 @@ public class Controller {
         /*
          * 配置爬虫种子页面，就是规定的从哪里开始爬，可以配置多个种子页面
          */
-        controller.addSeed("http://www.china-pub.com/browse/");
+        controller.addSeed("http://nvsm.cnki.net/kns/brief/result.aspx?dbprefix=CJFQ");
+        controller.addSeed("http://kns.cnki.net/KCMS/detail/11.2987.U.20180323.1113.002.html");
 
         /*
          * Start the crawl. This is a blocking operation, meaning that your code
          * will reach the line after this only when crawling is finished.
          */
-        controller.start(MyCrawler.class, numberOfCrawlers);
+        controller.start(CnkiCrawler.class, numberOfCrawlers);
     }
 }
