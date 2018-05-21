@@ -44,23 +44,32 @@ public class CnkiCrawler extends WebCrawler {
             HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
             String html = htmlParseData.getHtml();
             Document doc = Jsoup.parse(html);
-            String title =doc.select("#mainArea > div.wxmain > div.wxTitle > h2").text();
+
+            String title =doc.select("#chTitle").text();
             System.out.println("title: " + title);
-            String author =doc.select("#mainArea > div.wxmain > div.wxTitle > div.author > span > a").text();
+
+            String author =doc.select("#main > div:nth-child(1) > div.summary.pad10 > p:nth-child(1) > a").text();
             System.out.println("author: " + author);
 
+            String teacher =doc.select("#main > div:nth-child(1) > div.summary.pad10 > p:nth-child(2) > a").text();
+            System.out.println("teacher: " + teacher);
 
-            String time =doc.select("#mainArea > div.wxmain > div.head-tag > div > b").text();
-            System.out.println("time: " + time);
+            String aaa =doc.select("#main > div:nth-child(1) > div.summary.pad10 > p:nth-child(3)").text();
+            System.out.println(aaa);
+//            String time =doc.select("#mainArea > div.wxmain > div.head-tag > div > b").text();
+//            System.out.println("time: " + time);
+//
+//            String publisher =doc.select("#mainArea > div.wxmain > div.wxTitle > div.orgn > span > a").text();
+//            System.out.println("publisher: " + publisher);
+//
+//            String tag =doc.select("#mainArea > div.wxmain > div.wxInfo > div.wxBaseinfo > p:nth-child(3) > a").text();
+//            System.out.println("tag: " + tag);
 
-            String publisher =doc.select("#mainArea > div.wxmain > div.wxTitle > div.orgn > span > a").text();
-            System.out.println("publisher: " + publisher);
-
-            String tag =doc.select("#mainArea > div.wxmain > div.wxInfo > div.wxBaseinfo > p:nth-child(3) > a").text();
-            System.out.println("tag: " + tag);
-
-            String introduction =doc.select("#ChDivSummary").text();
+            String introduction =doc.select("##ChDivSummary").text();
             System.out.println("introduction: " + introduction);
+
+            String keyword = doc.select("#ChDivKeyWord").text();
+            System.out.println("keyword:"+keyword);
 
         }
     }

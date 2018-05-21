@@ -8,7 +8,6 @@ import org.apache.commons.lang.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import java.io.UnsupportedEncodingException;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.regex.Matcher;
@@ -21,7 +20,7 @@ public class SciencenetCrawler extends WebCrawler {
 
     // JDBC 驱动名及数据库 URL
     static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    static final String DB_URL = "jdbc:mysql://localhost:3306/science";
+    static final String DB_URL = "jdbc:mysql://localhost:3306/douban_db?useUnicode=true&characterEncoding=utf-8";
 
     // 数据库的用户名与密码，需要根据自己的设置
     static final String USER = "root";
@@ -55,11 +54,6 @@ public class SciencenetCrawler extends WebCrawler {
         if (page.getParseData() instanceof HtmlParseData) {
             HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
             String html = htmlParseData.getHtml();
-//            try {
-//                html = new String(html.getBytes("gbk"),"utf-8");
-//            } catch (UnsupportedEncodingException e) {
-//                e.printStackTrace();
-//            }
             Document doc = Jsoup.parse(html);
             String title = doc.select("#ct > div.hmleft > div.hmleft1 > h1").text();
             System.out.println("title: " + title);
@@ -105,8 +99,6 @@ public class SciencenetCrawler extends WebCrawler {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-
         }
     }
 }

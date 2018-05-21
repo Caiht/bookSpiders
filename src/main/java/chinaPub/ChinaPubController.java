@@ -1,4 +1,4 @@
-package sciencenet;
+package chinaPub;
 
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
@@ -6,18 +6,28 @@ import edu.uci.ics.crawler4j.fetcher.PageFetcher;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
 
-public class SciencenetController {
+import java.util.Random;
 
+public class ChinaPubController {
     public static void main(String[] args) throws Exception {
-        String crawlStorageFolder = "/data/crawl/root2";// 定义爬虫数据存储位置
-        int numberOfCrawlers = 7; // 定义7个爬虫，也就是7个线程
+        String crawlStorageFolder = "/data/crawl/root";
+        int numberOfCrawlers = 7;
 
-        CrawlConfig config = new CrawlConfig();// 定义爬虫配置
-//        config.setMaxDepthOfCrawling(2);//抓取深度
+        CrawlConfig config = new CrawlConfig();
 
-        //页面抓取最大数量
-        //crawlConfig.setMaxPagesToFetch(maxPagesToFetch);
+//        config.setMaxDepthOfCrawling(4);
         config.setCrawlStorageFolder(crawlStorageFolder);
+        Random random = new Random();
+        //设置请求的频率
+        config.setPolitenessDelay(random.nextInt(2000%1001)+1000);
+        /*
+         * 这里可以设置代理
+         * config.setProxyHost("proxyserver.example.com");  // 代理地址
+         * config.setProxyPort(8080); // 代理端口
+         *
+         * 如果使用代理，也可以设置身份认证  用户名和密码
+         * config.setProxyUsername(username); config.getProxyPassword(password);
+         */
 
         /*
          * 这个配置假如设置成true，当一个爬虫突然终止或者奔溃，我们可以恢复；
@@ -38,18 +48,15 @@ public class SciencenetController {
         RobotstxtServer robotstxtServer = new RobotstxtServer(robotstxtConfig, pageFetcher);
         CrawlController controller = new CrawlController(config, pageFetcher, robotstxtServer);
 
-
         /*
          * 配置爬虫种子页面，就是规定的从哪里开始爬，可以配置多个种子页面
          */
-        controller.addSeed("http://doc.sciencenet.cn/default.aspx");
-        for(int i =4;i<24000;i++)
-        controller.addSeed("http://doc.sciencenet.cn/DocInfo.aspx?id="+i);
+        controller.addSeed("http://www.china-pub.com/browse/");
 
         /*
          * Start the crawl. This is a blocking operation, meaning that your code
          * will reach the line after this only when crawling is finished.
          */
-        controller.start(SciencenetCrawler.class, numberOfCrawlers);
+        controller.start(ChinaPubCrawler.class, numberOfCrawlers);
     }
 }

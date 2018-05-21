@@ -15,7 +15,7 @@ public class CnkiController {
         int numberOfCrawlers = 7; // 定义7个爬虫，也就是7个线程
 
         CrawlConfig config = new CrawlConfig();// 定义爬虫配置
-        config.setMaxDepthOfCrawling(4);//抓取深度
+//        config.setMaxDepthOfCrawling(4);//抓取深度
 
         //页面抓取最大数量
         //crawlConfig.setMaxPagesToFetch(maxPagesToFetch);
@@ -38,6 +38,7 @@ public class CnkiController {
          * 默认配置是false；推荐用默认配置，假如设置成true，性能会大打折扣；
          */
         config.setResumableCrawling(false);
+
         /*
          * 是否爬取二进制文件，比如图片，PDF文档，视频之类的东西 这里设置false 不爬取
          * 默认值true，爬取
@@ -55,8 +56,9 @@ public class CnkiController {
         /*
          * 配置爬虫种子页面，就是规定的从哪里开始爬，可以配置多个种子页面
          */
-        controller.addSeed("http://nvsm.cnki.net/kns/brief/result.aspx?dbprefix=CJFQ");
-        controller.addSeed("http://kns.cnki.net/KCMS/detail/11.2987.U.20180323.1113.002.html");
+        for(int i = 1; i < 83773; i++){
+            controller.addSeed("http://222.197.165.84/kns55/brief/brief.aspx?curpage="+i+"&RecordsPerPage=20&QueryID=0&ID=&turnpage=1&tpagemode=L&dbPrefix=CMFD&Fields=&DisplayMode=custommode&PageName=ASP.brief_result_aspx");
+        }
 
         /*
          * Start the crawl. This is a blocking operation, meaning that your code

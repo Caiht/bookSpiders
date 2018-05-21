@@ -1,3 +1,5 @@
+package chinaPub;
+
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
@@ -7,7 +9,7 @@ import org.jsoup.nodes.Document;
 
 import java.util.regex.Pattern;
 
-public class MyCrawler extends WebCrawler {
+public class ChinaPubCrawler extends WebCrawler {
 
 
 
