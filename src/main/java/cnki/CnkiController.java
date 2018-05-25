@@ -5,60 +5,55 @@ import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
+import org.apache.http.message.BasicHeader;
 
-import java.util.Random;
+import java.util.HashSet;
 
 public class CnkiController {
 
     public static void main(String[] args) throws Exception {
-        String crawlStorageFolder = "/data/crawl/root1";// 定义爬虫数据存储位置
-        int numberOfCrawlers = 7; // 定义7个爬虫，也就是7个线程
-
-        CrawlConfig config = new CrawlConfig();// 定义爬虫配置
-//        config.setMaxDepthOfCrawling(4);//抓取深度
-
-        //页面抓取最大数量
-        //crawlConfig.setMaxPagesToFetch(maxPagesToFetch);
-
+        String crawlStorageFolder = "/home/IdeaProjects/Crawler4jDemo/data";
+        int numberOfCrawlers = 7;
+        CrawlConfig config = new CrawlConfig();
+        //是否尊重网络重定向
+//        config.setFollowRedirects(false);
+        //抓取深度
+        config.setMaxDepthOfCrawling(1);
         config.setCrawlStorageFolder(crawlStorageFolder);
-        Random random = new Random();
-        //设置请求的频率
-        config.setPolitenessDelay(random.nextInt(2000%1001)+1000);
-        /*
-         * 这里可以设置代理
-         * config.setProxyHost("proxyserver.example.com");  // 代理地址
-         * config.setProxyPort(8080); // 代理端口
-         *
-         * 如果使用代理，也可以设置身份认证  用户名和密码
-         * config.setProxyUsername(username); config.getProxyPassword(password);
-         */
 
+        HashSet<BasicHeader> collections = new HashSet<BasicHeader>();
+        collections.add(new BasicHeader("User-Agent","Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36"));
+        collections.add(new BasicHeader("Accept","text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8"));
+        collections.add(new BasicHeader("Accept-Encoding", "gzip, deflate"));
+        collections.add(new BasicHeader("Accept-Language", "zh-CN,zh;q=0.9"));
+//        collections.add(new BasicHeader("Content-Type","application/x-www-form-urlencoded;charset=UTF-8"));
+//        collections.add(new BasicHeader("Connection", "keep-alive"));
+        collections.add(new BasicHeader("Cookie", "ASP.NET_SessionId=us5y53rfqjy02r45v2czwj3p;LID=;RsPerPage=20;FileNameS=cnki%3A;KNS_DisplayModel=custommode"));
+        config.setDefaultHeaders(collections);
         /*
-         * 这个配置假如设置成true，当一个爬虫突然终止或者奔溃，我们可以恢复；
-         * 默认配置是false；推荐用默认配置，假如设置成true，性能会大打折扣；
+         * Instantiate the controller for this crawl.
          */
-        config.setResumableCrawling(false);
-
-        /*
-         * 是否爬取二进制文件，比如图片，PDF文档，视频之类的东西 这里设置false 不爬取
-         * 默认值true，爬取
-         */
-//        config.setIncludeBinaryContentInCrawling(false);
-        /*
-         * 实例化爬虫控制器
-         */
-        PageFetcher pageFetcher = new PageFetcher(config);// 实例化页面获取器
-        RobotstxtConfig robotstxtConfig = new RobotstxtConfig();// 实例化爬虫机器人配置 比如可以设置 user-agent
-        robotstxtConfig.setUserAgentName("Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36");
+        PageFetcher pageFetcher = new PageFetcher(config);
+        RobotstxtConfig robotstxtConfig = new RobotstxtConfig();
         RobotstxtServer robotstxtServer = new RobotstxtServer(robotstxtConfig, pageFetcher);
+
         CrawlController controller = new CrawlController(config, pageFetcher, robotstxtServer);
 
+
+
         /*
-         * 配置爬虫种子页面，就是规定的从哪里开始爬，可以配置多个种子页面
+         * For each crawl, you need to add some seed urls. These are the first
+         * URLs that are fetched and then the crawler starts following links
+         * which are found in these pages
          */
-        for(int i = 1; i < 83773; i++){
-            controller.addSeed("http://222.197.165.84/kns55/brief/brief.aspx?curpage="+i+"&RecordsPerPage=20&QueryID=0&ID=&turnpage=1&tpagemode=L&dbPrefix=CMFD&Fields=&DisplayMode=custommode&PageName=ASP.brief_result_aspx");
+        String string="http://222.197.165.84/kns55/brief/brief.aspx?curpage=";
+        String str ="&RecordsPerPage=20&QueryID=2&ID=&turnpage=1&tpagemode=L&dbPrefix=CMFD&Fields=&DisplayMode=custommode&PageName=ASP.brief_result_aspx&sKuaKuID=2";
+        for(int i=0;i<=83773;i++){
+
+            controller.addSeed(string.concat(String.valueOf(i)).concat(str));
+            System.out.println(i);
         }
+
 
         /*
          * Start the crawl. This is a blocking operation, meaning that your code
